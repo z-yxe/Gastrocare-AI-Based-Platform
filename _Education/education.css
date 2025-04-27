@@ -1,0 +1,287 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+/* VARIABEL GLOBAL */
+:root {
+    --primary: #0E416C;           /* Warna primer biru tua */
+    --secondary: #1A8EC4;         /* Warna sekunder biru muda */
+    --text-dark: #3f3b57;         /* Warna teks gelap */
+    --text-white: #ffffff;        /* Warna teks putih */
+    --text-light: #908ca3;        /* Warna teks terang */
+    --white: #ffffff;             /* Warna putih */
+    --max-width: 1200px;          /* Lebar maksimum konten */
+}
+
+/* RESET CSS */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+/* HERO SECTION */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 100px;
+    transform: translateY(25px);
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/BG.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+.hero-content {
+    width: 100%;
+    padding: 2rem;
+}
+
+.hero-text {
+    background-color: rgba(14, 65, 108, 0.85);
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--white);
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.hero-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--white);
+}
+
+/* SECTION PENGERTIAN PENYAKIT LAMBUNG */
+.penyakit-lambung {
+    padding: 4rem 1rem;
+    background-color: var(--primary);
+    width: 100%;
+    margin: 2rem 0;
+}
+
+.penyakit-lambung .container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.penyakit-lambung h1 {
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.penyakit-lambung p {
+    font-size: 1rem;
+    color: var(--white);
+    line-height: 1.6;
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* SECTION JENIS-JENIS PENYAKIT */
+.jenis-penyakit {
+    padding: 4rem 1rem;
+    background-color: var(--white);
+}
+
+.jenis-penyakit h2 {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.grid-penyakit {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.card-penyakit {
+    background-color: #f8f9fa;
+    border-radius: 7px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card-penyakit:hover {
+    transform: translateY(-5px);
+}
+
+.card-penyakit h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.card-penyakit p {
+    color: var(--text-dark);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* SECTION MITOS DAN FAKTA */
+.mitos-fakta {
+    padding: 4rem 1rem;
+    background-color: #f0f4f8;
+}
+
+.mitos-fakta h2 {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.grid-mitos-fakta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.item-mitos-fakta {
+    background-color: var(--white);
+    border-radius: 7px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-mitos {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.icon-mitos {
+    font-size: 1.2rem;
+    color: red;
+    margin-right: 0.5rem;
+}
+
+.text-mitos {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.text-fakta {
+    display: flex;
+    align-items: flex-start;
+}
+
+.icon-fakta {
+    font-size: 1.2rem;
+    color: green;
+    margin-right: 0.5rem;
+}
+
+/* SECTION PENYEBAB DAN GEJALA */
+.penyebab-gejala {
+    padding: 4rem 1rem;
+    background-color: var(--primary);
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.kotak-putih {
+    background-color: var(--white);
+    border-radius: 7px;
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kotak-putih h2 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    text-align: left;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--secondary);
+}
+
+.daftar-penyebab, 
+.daftar-gejala {
+    list-style: none;
+    padding: 0;
+}
+
+.item-penyebab, 
+.item-gejala {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.item-penyebab:hover, 
+.item-gejala:hover {
+    transform: translateX(5px);
+}
+
+.nomor {
+    width: 30px;
+    height: 30px;
+    margin-right: 1rem;
+    background-color: var(--secondary);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.item-penyebab span, 
+.item-gejala span {
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    flex: 1;
+}
