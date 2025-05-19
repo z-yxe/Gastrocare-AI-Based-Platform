@@ -1,21 +1,27 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../_Login/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sesi 1: Data Diri</title>
+    <title>Sesi 4: Gejala Spesifik</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="/_Chatbot/chatbot.css">
-    <link rel="stylesheet" href="/_Template/template.css">
+    <link rel="stylesheet" href="../_Chatbot/chatbot.css">
+    <link rel="stylesheet" href="../_Template/template.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
 <body>
     <!-- Navigasi -->
     <nav>
         <div class="nav-header">
-            <a href="/main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
+            <a href="../main.php" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
             <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Logo"></a>
             
             <div class="nav-profile">
@@ -65,71 +71,31 @@
         </div>
     </div>
 
-    <!-- Form Section -->
     <div class="container1">
-        <form id="diagnosis-form" onsubmit="saveFormData(event, 'session2.html')">
+        <form id="diagnosis-form" onsubmit="saveFormData(event, 'session5.php')">
             <div class="question-session active">
-                <h2>Apa jenis kelamin anda?</h2>
+                <h2>Apakah Anda pernah mengalami muntah darah atau tinja berwarna hitam?</h2>
                 <div class="form-group">
-                    <button type="button" class="option-btn" data-field="gender" data-value="male" onclick="selectOption(this, 'gender', 'male')">Laki - Laki</button>
-                    <button type="button" class="option-btn" data-field="gender" data-value="female" onclick="selectOption(this, 'gender', 'female')">Perempuan</button>
-                    <input type="hidden" id="gender" name="gender" required>
+                    <button type="button" class="option-btn" data-field="blood_vomit" data-value="yes" onclick="selectOption(this, 'blood_vomit', 'yes')">Ya</button>
+                    <button type="button" class="option-btn" data-field="blood_vomit" data-value="no" onclick="selectOption(this, 'blood_vomit', 'no')">Tidak</button>
+                    <input type="hidden" id="blood_vomit" name="blood_vomit" required>
                 </div>
-
-                <h2>Berapa usia anda saat ini?</h2>
+                <h2>Apakah Anda mengalami penurunan berat badan yang tidak dapat dijelaskan?</h2>
                 <div class="form-group">
-                    <select name="age" id="age" required >
-                        <option value="">Pilih usia anda</option>
-                        <option value="0-20">0-20</option>
-                        <option value="21-40">21-40</option>
-                        <option value="41-60">41-60</option>
-                        <option value="61+">61+</option>
-                    </select>
+                    <button type="button" class="option-btn" data-field="weight_loss" data-value="yes" onclick="selectOption(this, 'weight_loss', 'yes')">Ya</button>
+                    <button type="button" class="option-btn" data-field="weight_loss" data-value="no" onclick="selectOption(this, 'weight_loss', 'no')">Tidak</button>
+                    <input type="hidden" id="weight_loss" name="weight_loss" required>
                 </div>
-
-                <h2>Berapa berat badan anda? (kg)</h2>
+                <h2>Apakah nyeri perut Anda membaik atau memburuk setelah makan?</h2>
                 <div class="form-group">
-                    <input type="number" name="weight" id="weight" placeholder="Isi dengan angka (kg)" required min="1">
-                </div>
-
-                <h2>Berapa tinggi badan anda? (cm)</h2>
-                <div class="form-group">
-                    <input type="number" name="height" id="height" placeholder="Isi dengan angka (cm)" required min="1">
-                </div>
-
-                <h2>Apakah Anda memiliki riwayat penyakit kronis?</h2>
-                <div class="form-group checkbox-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="diabetes">
-                        <span>Diabetes</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="hypertension">
-                        <span>Hipertensi</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="asthma">
-                        <span>Asma</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="heart_disease">
-                        <span>Jantung</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="other">
-                        <span>Lainnya</span>
-                    </label>
-                </div>
-
-                <h2>Apakah Anda mengonsumsi rokok atau alkohol?</h2>
-                <div class="form-group">
-                    <button type="button" class="option-btn" data-field="smoking_alcohol" data-value="yes" onclick="selectOption(this, 'smoking_alcohol', 'yes')">YA</button>
-                    <button type="button" class="option-btn" data-field="smoking_alcohol" data-value="no" onclick="selectOption(this, 'smoking_alcohol', 'no')">NO</button>
-                    <input type="hidden" id="smoking_alcohol" name="smoking_alcohol" required>
+                    <button type="button" class="option-btn" data-field="pain_after_eating" data-value="better" onclick="selectOption(this, 'pain_after_eating', 'better')">Membaikan</button>
+                    <button type="button" class="option-btn" data-field="pain_after_eating" data-value="worse" onclick="selectOption(this, 'pain_after_eating', 'worse')">Memburuk</button>
+                    <button type="button" class="option-btn" data-field="pain_after_eating" data-value="no_change" onclick="selectOption(this, 'pain_after_eating', 'no_change')">Tidak berubah</button>
+                    <input type="hidden" id="pain_after_eating" name="pain_after_eating" required>
                 </div>
             </div>
-
             <div class="navigation-buttons">
+                <button type="button" class="btn secondary" onclick="window.location.href='session3.php'">Kembali</button>
                 <button type="submit" class="btn primary">Lanjut</button>
             </div>
         </form>
@@ -194,12 +160,29 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="../main.js"></script>
     <script src="js/script1.js"></script>
-    <script src="/_Chatbot/chatbot.js"></script>
-    <script src="/_Template/template.js"></script>
+    <script src="../_Chatbot/chatbot.js"></script>
+    <script src="../_Template/profile.js"></script>
+    <script>
+    // Sinkronisasi session login PHP ke sessionStorage
+    fetch('../get_user.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.loggedIn) {
+          sessionStorage.setItem('loggedInUser', data.username);
+          sessionStorage.setItem('userRole', data.role);
+        } else {
+          sessionStorage.removeItem('loggedInUser');
+          sessionStorage.removeItem('userRole');
+        }
+        if (typeof updateProfile === 'function') updateProfile();
+      });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            updateProgressBar(1);
+            updateProgressBar(4);
             loadFormData();
         });
     </script>

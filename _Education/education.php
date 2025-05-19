@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../_Login/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,14 +15,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
     <link rel="stylesheet" href="education.css" />
     <link rel="stylesheet" href="responsive-education.css" />
-    <link rel="stylesheet" href="/_Chatbot/chatbot.css">
-    <link rel="stylesheet" href="/_Template/template.css">
+    <link rel="stylesheet" href="../_Chatbot/chatbot.css">
+    <link rel="stylesheet" href="../_Template/template.css">
   </head>
   <body>
     <!-- Navigasi -->
     <nav>
       <div class="nav-header">
-        <a href="/main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
+        <a href="../main.php" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
         <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Logo"></a>
         
         <div class="nav-profile">
@@ -334,8 +341,23 @@
       </div>
     </div>
 
-    <script src="education.js"></script>
-    <script src="/_Chatbot/chatbot.js"></script>
-    <script src="/_Template/template.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="../main.js"></script>
+    <script src="../_Chatbot/chatbot.js"></script>
+    <script src="../_Template/profile.js"></script>
+    <script>
+    fetch('../get_user.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.loggedIn) {
+          sessionStorage.setItem('loggedInUser', data.username);
+          sessionStorage.setItem('userRole', data.role);
+        } else {
+          sessionStorage.removeItem('loggedInUser');
+          sessionStorage.removeItem('userRole');
+        }
+        if (typeof updateProfile === 'function') updateProfile();
+      });
+    </script>
   </body>
 </html>

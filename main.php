@@ -105,7 +105,7 @@
                     </div>
                     <h4>Edukasi & Informasi</h4>
                     <p>Pelajari segala hal tentang kesehatan lambung dari sumber terpercaya untuk lambung Anda.</p>
-                    <a href="_Education/education.html" class="tool-link">Baca Selengkapnya</a>
+                    <a href="_Education/education.php" class="tool-link">Baca Selengkapnya</a>
                 </div>
                 <div class="intro-card">
                     <div class="intro-image">
@@ -113,7 +113,7 @@
                     </div>
                     <h4>Diagnosa Sederhana</h4>
                     <p>Dapatkan gambaran awal tentang kondisi lambung Anda melalui fitur diagnosa cepat dan mudah.</p>
-                    <a href="_Diagnosa/diagnosa.html" class="tool-link">Coba Sekarang</a>
+                    <a href="_Diagnosa/diagnosa.php" class="tool-link">Coba Sekarang</a>
                 </div>
                 <div class="intro-card">
                     <div class="intro-image">
@@ -121,7 +121,7 @@
                     </div>
                     <h4>Saran Pola Hidup & Nutrisi</h4>
                     <p>Temukan rekomendasi pola hidup dan nutrisi untuk menjaga lambung Anda tetap sehat setiap hari.</p>
-                    <a href="_Lifestyle/lifestyle.html" class="tool-link">Baca Selengkapnya</a>
+                    <a href="_Lifestyle/lifestyle.php" class="tool-link">Baca Selengkapnya</a>
                 </div>
             </div>
         </section>
@@ -409,5 +409,23 @@
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script src="main.js"></script>
         <script src="_Chatbot/chatbot.js"></script>
+
+        <!-- Cek session login dan set sessionStorage -->
+        <script>
+        // Cek status login dari server (PHP session)
+        fetch('get_user.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.loggedIn) {
+              sessionStorage.setItem('loggedInUser', data.username);
+              sessionStorage.setItem('userRole', data.role);
+            } else {
+              sessionStorage.removeItem('loggedInUser');
+              sessionStorage.removeItem('userRole');
+            }
+            // Panggil updateProfile jika sudah didefinisikan
+            if (typeof updateProfile === 'function') updateProfile();
+          });
+        </script>
     </body>
 </html>

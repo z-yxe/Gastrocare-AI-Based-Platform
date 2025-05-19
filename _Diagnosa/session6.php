@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../_Login/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -5,8 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sesi 6: Tingkat Stres & Kondisi Psikologis</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="/_Chatbot/chatbot.css">
-    <link rel="stylesheet" href="/_Template/template.css">
+    <link rel="stylesheet" href="../_Chatbot/chatbot.css">
+    <link rel="stylesheet" href="../_Template/template.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
@@ -14,7 +21,7 @@
     <!-- Navigasi -->
     <nav>
         <div class="nav-header">
-            <a href="/main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
+            <a href="../main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
             <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Logo"></a>
             
             <div class="nav-profile">
@@ -65,7 +72,7 @@
     </div>
     
     <div class="container1">
-        <form id="diagnosis-form" onsubmit="saveFormData(event, 'result.html')">
+        <form id="diagnosis-form" onsubmit="saveFormData(event, 'result.php')">
             <div class="question-session active">
                 <h2>Bagaimana tingkat stres Anda dalam sebulan terakhir?</h2>
                 <div class="form-group">
@@ -90,7 +97,7 @@
                 </div>
             </div>
             <div class="navigation-buttons">
-                <button type="button" class="btn secondary" onclick="window.location.href='session5.html'">Kembali</button>
+                <button type="button" class="btn secondary" onclick="window.location.href='session5.php'">Kembali</button>
                 <button type="submit" class="btn primary">Lihat Hasil</button>
             </div>
         </form>
@@ -155,9 +162,26 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="../main.js"></script>
     <script src="js/script1.js"></script>
-    <script src="/_Chatbot/chatbot.js"></script>
-    <script src="/_Template/template.js"></script>
+    <script src="../_Chatbot/chatbot.js"></script>
+    <script src="../_Template/profile.js"></script>
+    <script>
+    // Sinkronisasi session login PHP ke sessionStorage
+    fetch('../get_user.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.loggedIn) {
+          sessionStorage.setItem('loggedInUser', data.username);
+          sessionStorage.setItem('userRole', data.role);
+        } else {
+          sessionStorage.removeItem('loggedInUser');
+          sessionStorage.removeItem('userRole');
+        }
+        if (typeof updateProfile === 'function') updateProfile();
+      });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             updateProgressBar(6);

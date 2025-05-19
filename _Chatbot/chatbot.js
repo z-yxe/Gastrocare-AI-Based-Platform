@@ -131,3 +131,39 @@ messageInput.addEventListener("input", () => {
 
 sendMessageButton.addEventListener("click", (e) => handleOutgoingMessage(e));
 closeChatbot.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+
+// Event listener untuk tombol chatbot toggler dan close
+// Agar chatbot bisa muncul di semua halaman
+
+document.addEventListener('DOMContentLoaded', function() {
+  const chatbotToggler = document.getElementById('chatbot-toggler');
+  const closeChatbot = document.getElementById('close-chatbot');
+  const showChatbot = () => {
+    // Cek login sebelum toggle chatbot
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    if (!loggedInUser) {
+      // Jika belum login, pastikan chatbot selalu tertutup
+      document.body.classList.remove('show-chatbot');
+      // Tampilkan popup peringatan jika ada
+      if (typeof showPopup === 'function') {
+        showPopup("Peringatan", "Silakan login terlebih dahulu untuk mengakses chatbot!");
+      } else {
+        alert("Silakan login terlebih dahulu untuk mengakses chatbot!");
+      }
+      return;
+    }
+    // Toggle chatbot jika sudah login
+    document.body.classList.toggle('show-chatbot');
+  };
+  if (chatbotToggler) {
+    chatbotToggler.addEventListener('click', showChatbot);
+  }
+  if (closeChatbot) {
+    closeChatbot.addEventListener('click', () => document.body.classList.remove('show-chatbot'));
+  }
+
+  // Pastikan chatbot tertutup saat halaman dimuat jika belum login
+  if (!sessionStorage.getItem('loggedInUser')) {
+    document.body.classList.remove('show-chatbot');
+  }
+});

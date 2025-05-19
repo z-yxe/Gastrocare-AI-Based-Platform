@@ -1,12 +1,19 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../_Login/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Diagnosa Kesehatan Lambung</title>
-    <link rel="stylesheet" href="css/style1.css">
-    <link rel="stylesheet" href="/_Chatbot/chatbot.css">
-    <link rel="stylesheet" href="/_Template/template.css">
+    <title>Sesi 2: Kebiasaan Makan & Gaya Hidup</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../_Chatbot/chatbot.css">
+    <link rel="stylesheet" href="../_Template/template.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
@@ -14,7 +21,7 @@
     <!-- Navigasi -->
     <nav>
         <div class="nav-header">
-            <a href="/main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
+            <a href="../main.php" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
             <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Logo"></a>
             
             <div class="nav-profile">
@@ -51,51 +58,44 @@
         </ul>
     </nav>
 
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <h2>Lengkapi Pertanyaan Dengan Data Yang Sesuai!</h2>
+        <div class="steps">
+            <div class="step active" data-step="1"><span>1</span></div>
+            <div class="step" data-step="2"><span>2</span></div>
+            <div class="step" data-step="3"><span>3</span></div>
+            <div class="step" data-step="4"><span>4</span></div>
+            <div class="step" data-step="5"><span>5</span></div>
+            <div class="step" data-step="6"><span>6</span></div>
+        </div>
+    </div>
+
     <div class="container1">
-        <div class="result-page">
-            <h1>Hasil Pemeriksaan GastroCare</h1>
-            <div class="result-container">
-                <!-- Progress Bar Section -->
-                <div class="progress-container">
-                    <h2>Skala Kondisi Lambung</h2>
-                    <div class="bar">
-                        <div class="section green"></div>
-                        <div class="section yellow"></div>
-                        <div class="section red"></div>
-                    </div>
-                    <div class="marker-container">
-                        <div class="marker" id="marker">0</div>
-                    </div>
-                    <div class="labels">
-                        <span>0-13 (Rendah)</span>
-                        <span>14-26 (Sedang)</span>
-                        <span>27-40 (Tinggi)</span>
-                    </div>
+        <form id="diagnosis-form" onsubmit="saveFormData(event, 'session3.php')">
+            <div class="question-session active">
+                <h2>Seberapa sering Anda makan dalam sehari?</h2>
+                <div class="form-group">
+                    <button type="button" class="option-btn" data-field="meal_frequency" data-value="1" onclick="selectOption(this, 'meal_frequency', '1')">1 kali</button>
+                    <button type="button" class="option-btn" data-field="meal_frequency" data-value="2" onclick="selectOption(this, 'meal_frequency', '2')">2 kali</button>
+                    <button type="button" class="option-btn" data-field="meal_frequency" data-value="3" onclick="selectOption(this, 'meal_frequency', '3')">3 kali</button>
+                    <button type="button" class="option-btn" data-field="meal_frequency" data-value="more" onclick="selectOption(this, 'meal_frequency', 'more')">Lebih dari 3 kali</button>
+                    <input type="hidden" id="meal_frequency" name="meal_frequency" required>
                 </div>
-
-                <!-- Diagnosis Conclusion (unchanged) -->
-                <div class="diagnosis-conclusion">
-                    <br>
-                    <h2 id="diagnosis-title">Kesimpulan</h2>
-                    <p id="conclusion-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis malesuada vulputate tempor. Aliquam quam turpis, pharetra quis ante in, ornare luctus felis. Aliquam non magna vitae odio eleifend sodales. Aliquam non facilisis dui. Nam porttitor augue sed augue scelerisque, bibendum rhoncus sem egestas. Proin non diam eu est semper pulvinar sed vel metus. Nam venenatis purus dolor, in feugiat massa feugiat vitae.</p>
-                </div>
-
-                <!-- Ringkasan Tentang Kesehatan Lambung (unchanged) -->
-                <div class="health-details">
-                    <br><br>
-                    <h2>Ringkasan Tentang Kesehatan Lambung</h2>
-                    <p>Diimpun berdasarkan kondisi terkini</p>
-                    <ul id="health-details-list">
-                        <!-- Dynamically populated by JavaScript -->
-                    </ul>
-                </div>
-
-                <!-- Mulai Diagnosa Baru Button (unchanged) -->
-                <div class="button-container">
-                    <button class="btn primary" onclick="window.location.href='diagnosa.html'">Mulai Diagnosa Baru</button>
+                <h2>Apakah Anda sering melewatkan waktu makan?</h2>
+                <div class="form-group">
+                    <button type="button" class="option-btn" data-field="skip_meals" data-value="often" onclick="selectOption(this, 'skip_meals', 'often')">Sering</button>
+                    <button type="button" class="option-btn" data-field="skip_meals" data-value="sometimes" onclick="selectOption(this, 'skip_meals', 'sometimes')">Kadang-kadang</button>
+                    <button type="button" class="option-btn" data-field="skip_meals" data-value="rarely" onclick="selectOption(this, 'skip_meals', 'rarely')">Jarang</button>
+                    <button type="button" class="option-btn" data-field="skip_meals" data-value="never" onclick="selectOption(this, 'skip_meals', 'never')">Tidak pernah</button>
+                    <input type="hidden" id="skip_meals" name="skip_meals" required>
                 </div>
             </div>
-        </div>
+            <div class="navigation-buttons">
+                <button type="button" class="btn secondary" onclick="window.location.href='session1.php'">Kembali</button>
+                <button type="submit" class="btn primary">Lanjut</button>
+            </div>
+        </form>
     </div>
 
     <!-- FOOTER -->
@@ -157,11 +157,31 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="../main.js"></script>
     <script src="js/script1.js"></script>
-    <script src="/_Chatbot/chatbot.js"></script>
-    <script src="/_Template/template.js"></script>
+    <script src="../_Chatbot/chatbot.js"></script>
+    <script src="../_Template/profile.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', displayResult);
+    // Sinkronisasi session login PHP ke sessionStorage
+    fetch('../get_user.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.loggedIn) {
+          sessionStorage.setItem('loggedInUser', data.username);
+          sessionStorage.setItem('userRole', data.role);
+        } else {
+          sessionStorage.removeItem('loggedInUser');
+          sessionStorage.removeItem('userRole');
+        }
+        if (typeof updateProfile === 'function') updateProfile();
+      });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgressBar(2);
+            loadFormData();
+        });
     </script>
 </body>
 </html>

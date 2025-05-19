@@ -1,3 +1,55 @@
+<?php
+include '../db.php';
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
+
+    if (isset($_POST['action']) && $_POST['action'] === 'login') {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE email = ?");
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            if (password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
+
+                $redirectUrl = $user['role'] === 'admin' ? '../admin.php' : '../main.php';
+                echo json_encode(['status' => 'success', 'redirect' => $redirectUrl]);
+                exit;
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Password salah!']);
+                exit;
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Email tidak ditemukan!']);
+            exit;
+        }
+    } elseif (isset($_POST['action']) && $_POST['action'] === 'register') {
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        $stmt->bind_param('sss', $username, $email, $password);
+
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Registrasi berhasil! Silakan login.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Registrasi gagal!']);
+        }
+        exit;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +67,7 @@
     <div class="container" id="container">
         <!-- Form Register -->
         <div class="form-container sign-up-container">
-            <form id="registerForm">
+            <form id="registerForm" method="POST" action="">
                 <h1>Create Account</h1>
                 <button class="google-signin-btn">
                     <img src="https://www.google.com/favicon.ico" alt="Google Logo" class="google-logo">
@@ -25,7 +77,7 @@
                     <span>OR</span>
                 </div>
                 <div class="infield">
-                    <input type="text" id="name" placeholder="Name" required />
+                    <input type="text" id="name" name="username" placeholder="Name" required />
                     <label></label>
                 </div>
                 <div class="infield">
@@ -33,16 +85,17 @@
                     <label></label>
                 </div>
                 <div class="infield">
-                    <input type="password" id="regPassword" placeholder="Password" required />
+                    <input type="password" id="regPassword" placeholder="Password" name="password" required />
                     <label></label>
                 </div>
+                <input type="hidden" name="action" value="register">
                 <button type="submit">Sign Up</button>
             </form>
         </div>
 
         <!-- Form Login -->
         <div class="form-container sign-in-container">
-            <form id="loginForm">
+            <form id="loginForm" method="POST" action="">
                 <h1>Sign in</h1>
                 <button class="google-signin-btn">
                     <img src="https://www.google.com/favicon.ico" alt="Google Logo" class="google-logo">
@@ -56,9 +109,10 @@
                     <label></label>
                 </div>
                 <div class="infield">
-                    <input type="password" id="password" placeholder="Password" required />
+                    <input type="password" id="password" placeholder="Password" name="password" required />
                     <label></label>
                 </div>
+                <input type="hidden" name="action" value="login">
                 <button type="submit">Sign In</button>
             </form>
         </div>

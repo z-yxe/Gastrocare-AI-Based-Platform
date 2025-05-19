@@ -47,70 +47,57 @@ overlayBtn.addEventListener('click', () => {
 document.getElementById("loginForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-    if (email === "" || password === "") {
-        showPopup("Peringatan", "Email dan password harus diisi!");
-        return;
-    }
+    const formData = new FormData();
+    formData.append("action", "login");
+    formData.append("email", email);
+    formData.append("password", password);
 
-    if (password.length < 8) {
-        showPopup("Peringatan", "Password harus minimal 8 karakter!");
-        return;
-    }
-
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-        // Simpan nama pengguna ke sessionStorage
-        sessionStorage.setItem('loggedInUser', user.name);
-        setTimeout(() => {
-            window.location.href = "/main.html"; // Kembali ke halaman utama
-        }, 1500);
-    } else {
-        showPopup("Gagal", "Email atau password salah, atau user belum terdaftar!");
-    }
+    fetch("login.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Server Response:", data); // Log respons server
+        if (data.status === "success") {
+            console.log("Redirecting to:", data.redirect); // Log URL pengalihan
+            window.location.href = data.redirect;
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => console.error("Error:", error));
 });
 
 // Fungsi untuk menangani registrasi
 document.getElementById("registerForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("regEmail").value;
-    let password = document.getElementById("regPassword").value;
+    const username = document.getElementById("name").value;
+    const email = document.getElementById("regEmail").value;
+    const password = document.getElementById("regPassword").value;
 
-    if (name === "" || email === "" || password === "") {
-        showPopup("Peringatan", "Semua field harus diisi!");
-        return;
-    }
+    const formData = new FormData();
+    formData.append("action", "register");
+    formData.append("username", username);
+    formData.append("email", email);
+    formData.append("password", password);
 
-    if (password.length < 8) {
-        showPopup("Peringatan", "Password harus minimal 8 karakter!");
-        return;
-    }
-
-    const emailExists = users.some(u => u.email === email);
-    if (emailExists) {
-        showPopup("Peringatan", "Email sudah digunakan! Gunakan email lain.");
-        return;
-    }
-
-    users.push({
-        name: name,
-        email: email,
-        password: password
-    });
-    
-    showPopup("Sukses", "Registrasi berhasil! Silakan login.");
-
-    document.getElementById("registerForm").reset();
-    
-    setTimeout(() => {
-        container.classList.remove('right-panel-active');
-        hidePopup();
-    }, 1500);
+    fetch("login.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.status === "success") {
+            document.getElementById("registerForm").reset();
+        }
+    })
+    .catch(error => console.error("Error:", error));
 });
 
 // Toggle panel saat tombol overlay-panel diklik

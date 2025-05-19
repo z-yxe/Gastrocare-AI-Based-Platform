@@ -32,25 +32,27 @@ ScrollReveal().reveal(".fact-card", { ...scrollRevealOption, interval: 200 });
 ScrollReveal().reveal(".service-card", { duration: 1000, interval: 200 });
 
 /* Konfigurasi Swiper untuk Client Slider */
-const swiper = new Swiper(".swiper", {
-    slidesPerView: 3, // Default untuk desktop
-    spaceBetween: 20,
-    loop: true,
-    breakpoints: {
-        400: {
-            slidesPerView: 1, // 1 slide untuk mobile
-            spaceBetween: 10,
+if (typeof Swiper !== 'undefined' && document.querySelector('.swiper')) {
+    const swiper = new Swiper(".swiper", {
+        slidesPerView: 3, // Default untuk desktop
+        spaceBetween: 20,
+        loop: true,
+        breakpoints: {
+            400: {
+                slidesPerView: 1, // 1 slide untuk mobile
+                spaceBetween: 10,
+            },
+            600: {
+                slidesPerView: 2, // 2 slide untuk tablet
+                spaceBetween: 15,
+            },
+            1000: {
+                slidesPerView: 3, // 3 slide untuk desktop
+                spaceBetween: 20,
+            },
         },
-        600: {
-            slidesPerView: 2, // 2 slide untuk tablet
-            spaceBetween: 15,
-        },
-        1000: {
-            slidesPerView: 3, // 3 slide untuk desktop
-            spaceBetween: 20,
-        },
-    },
-});
+    });
+}
 
 // Seleksi elemen nav-profile, tombol Login, ikon dropdown, dan dropdown
 const navProfile = document.querySelector('.nav-profile');
@@ -65,7 +67,10 @@ const chatbotToggler = document.querySelector("#chatbot-toggler");
 const hamburger = document.querySelector('.hamburger');
 const mobileMenu = document.querySelector('.mobile-menu');
 const mobileProfileInfo = document.getElementById('mobile-profile-info');
-const mobileProfileName = mobileProfileInfo.querySelector('span');
+let mobileProfileName = null;
+if (mobileProfileInfo) {
+    mobileProfileName = mobileProfileInfo.querySelector('span');
+}
 const loginBtnMobile = document.getElementById('login-btn-mobile');
 const logoutBtnMobile = document.getElementById('logout-btn-mobile');
 
@@ -90,7 +95,7 @@ hamburger.addEventListener('click', () => {
 if (loginBtn) {
     loginBtn.addEventListener('click', () => {
         console.log("Tombol login diklik");
-        window.location.href = '_Login/login.html';
+        window.location.href = '_Login/login.php';
     });
 }
 
@@ -149,7 +154,8 @@ document.addEventListener('click', (e) => {
 if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
         sessionStorage.removeItem('loggedInUser');
-        updateProfile();
+        sessionStorage.removeItem('userRole');
+        window.location.href = 'logout.php';
     });
 }
 
@@ -157,14 +163,8 @@ if (logoutBtn) {
 if (logoutBtnMobile) {
     logoutBtnMobile.addEventListener('click', () => {
         sessionStorage.removeItem('loggedInUser');
-        updateProfile();
-        mobileMenu.classList.remove('active');
-        
-        // Reset hamburger icon
-        const hamburgerLines = document.querySelectorAll('.hamburger span');
-        hamburgerLines[0].style.transform = 'none';
-        hamburgerLines[1].style.opacity = '1';
-        hamburgerLines[2].style.transform = 'none';
+        sessionStorage.removeItem('userRole');
+        window.location.href = 'logout.php';
     });
 }
 
@@ -199,30 +199,37 @@ function updateProfile() {
         profileSpan.style.visibility = 'visible';
         
         // Update mobile view
-        mobileProfileInfo.classList.add('logged-in');
-        mobileProfileName.textContent = loggedInUser;
-        loginBtnMobile.classList.add('logged-in');
-        logoutBtnMobile.classList.add('logged-in');
+        if (mobileProfileInfo) {
+            mobileProfileInfo.classList.add('logged-in');
+        }
+        if (mobileProfileName) {
+            mobileProfileName.textContent = loggedInUser;
+        }
+        if (loginBtnMobile) {
+            loginBtnMobile.classList.add('logged-in');
+        }
+        if (logoutBtnMobile) {
+            logoutBtnMobile.classList.add('logged-in');
+        }
     } else {
         // Update desktop/tablet view
         navProfile.classList.remove('logged-in');
         profileDropdown.classList.remove('active');
         
         // Update mobile view
-        mobileProfileInfo.classList.remove('logged-in');
-        loginBtnMobile.classList.remove('logged-in');
-        logoutBtnMobile.classList.remove('logged-in');
+        if (mobileProfileInfo) {
+            mobileProfileInfo.classList.remove('logged-in');
+        }
+        if (loginBtnMobile) {
+            loginBtnMobile.classList.remove('logged-in');
+        }
+        if (logoutBtnMobile) {
+            logoutBtnMobile.classList.remove('logged-in');
+        }
     }
 }
 
-// Event listener untuk toggler chatbot
-chatbotToggler.addEventListener("click", () => {
-    if (!checkLogin()) {
-        showPopup("Peringatan", "Silakan login terlebih dahulu untuk mengakses chatbot!");
-    } else {
-        document.body.classList.toggle("show-chatbot");
-    }
-});
+// Event listener untuk chatbot sudah ditangani di chatbot.js
 
 // Fungsi untuk memeriksa status login
 function checkLogin() {
@@ -246,15 +253,22 @@ function hidePopup() {
     popup.style.display = 'none';
 }
 
-// Event listener untuk tombol close popup
-document.getElementById('popupClose').addEventListener('click', hidePopup);
+// Event listener untuk tombol tutup popup
+const popupClose = document.getElementById('popupClose');
+const popup = document.getElementById('customPopup');
 
-// Tutup popup saat klik di luar konten
-document.getElementById('customPopup').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('customPopup')) {
-        hidePopup();
-    }
-});
+if (popupClose) {
+    popupClose.addEventListener('click', hidePopup);
+}
+
+// Tutup popup jika user mengklik di luar konten popup
+if (popup) {
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            hidePopup();
+        }
+    });
+}
 
 // Seleksi semua tautan Tools
 const toolLinks = document.querySelectorAll('.tool-link');

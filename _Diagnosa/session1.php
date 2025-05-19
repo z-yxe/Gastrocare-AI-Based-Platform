@@ -1,20 +1,28 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../_Login/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sesi 5: Riwayat Kesehatan</title>
+    <title>Sesi 1: Data Diri</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="/_Chatbot/chatbot.css">
-    <link rel="stylesheet" href="/_Template/template.css">
+    <link rel="stylesheet" href="../_Chatbot/chatbot.css">
+    <link rel="stylesheet" href="../_Template/template.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
 <body>
     <!-- Navigasi -->
     <nav>
         <div class="nav-header">
-            <a href="/main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
+            <a href="../main.php" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
             <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Logo"></a>
             
             <div class="nav-profile">
@@ -64,30 +72,71 @@
         </div>
     </div>
 
+    <!-- Form Section -->
     <div class="container1">
-        <form id="diagnosis-form" onsubmit="saveFormData(event, 'session6.html')">
+        <form id="diagnosis-form" onsubmit="saveFormData(event, 'session2.php')">
             <div class="question-session active">
-                <h2>Apakah Anda pernah didiagnosis dengan penyakit lambung sebelumnya (seperti maag, GERD, dll)?</h2>
+                <h2>Apa jenis kelamin anda?</h2>
                 <div class="form-group">
-                    <button type="button" class="option-btn" data-field="history" data-value="yes" onclick="selectOption(this, 'history', 'yes')">Ya</button>
-                    <button type="button" class="option-btn" data-field="history" data-value="no" onclick="selectOption(this, 'history', 'no')">Tidak</button>
-                    <input type="hidden" id="history" name="history" required>
+                    <button type="button" class="option-btn" data-field="gender" data-value="male" onclick="selectOption(this, 'gender', 'male')">Laki - Laki</button>
+                    <button type="button" class="option-btn" data-field="gender" data-value="female" onclick="selectOption(this, 'gender', 'female')">Perempuan</button>
+                    <input type="hidden" id="gender" name="gender" required>
                 </div>
-                <h2>Apakah Anda sedang mengonsumsi obat-obatan tertentu secara rutin?</h2>
+
+                <h2>Berapa usia anda saat ini?</h2>
                 <div class="form-group">
-                    <button type="button" class="option-btn" data-field="medication" data-value="yes" onclick="selectOption(this, 'medication', 'yes')">Ya</button>
-                    <button type="button" class="option-btn" data-field="medication" data-value="no" onclick="selectOption(this, 'medication', 'no')">Tidak</button>
-                    <input type="hidden" id="medication" name="medication" required>
+                    <select name="age" id="age" required >
+                        <option value="">Pilih usia anda</option>
+                        <option value="0-20">0-20</option>
+                        <option value="21-40">21-40</option>
+                        <option value="41-60">41-60</option>
+                        <option value="61+">61+</option>
+                    </select>
                 </div>
-                <h2>Apakah ada anggota keluarga Anda yang memiliki riwayat penyakit lambung?</h2>
+
+                <h2>Berapa berat badan anda? (kg)</h2>
                 <div class="form-group">
-                    <button type="button" class="option-btn" data-field="family_history" data-value="yes" onclick="selectOption(this, 'family_history', 'yes')">Ya</button>
-                    <button type="button" class="option-btn" data-field="family_history" data-value="no" onclick="selectOption(this, 'family_history', 'no')">Tidak</button>
-                    <input type="hidden" id="family_history" name="family_history" required>
+                    <input type="number" name="weight" id="weight" placeholder="Isi dengan angka (kg)" required min="1">
+                </div>
+
+                <h2>Berapa tinggi badan anda? (cm)</h2>
+                <div class="form-group">
+                    <input type="number" name="height" id="height" placeholder="Isi dengan angka (cm)" required min="1">
+                </div>
+
+                <h2>Apakah Anda memiliki riwayat penyakit kronis?</h2>
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="chronic_disease" value="diabetes">
+                        <span>Diabetes</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="chronic_disease" value="hypertension">
+                        <span>Hipertensi</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="chronic_disease" value="asthma">
+                        <span>Asma</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="chronic_disease" value="heart_disease">
+                        <span>Jantung</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="chronic_disease" value="other">
+                        <span>Lainnya</span>
+                    </label>
+                </div>
+
+                <h2>Apakah Anda mengonsumsi rokok atau alkohol?</h2>
+                <div class="form-group">
+                    <button type="button" class="option-btn" data-field="smoking_alcohol" data-value="yes" onclick="selectOption(this, 'smoking_alcohol', 'yes')">YA</button>
+                    <button type="button" class="option-btn" data-field="smoking_alcohol" data-value="no" onclick="selectOption(this, 'smoking_alcohol', 'no')">NO</button>
+                    <input type="hidden" id="smoking_alcohol" name="smoking_alcohol" required>
                 </div>
             </div>
+
             <div class="navigation-buttons">
-                <button type="button" class="btn secondary" onclick="window.location.href='session4.html'">Kembali</button>
                 <button type="submit" class="btn primary">Lanjut</button>
             </div>
         </form>
@@ -119,7 +168,6 @@
         <span class="material-symbols-rounded">mode_comment</span>
         <span class="material-symbols-rounded">close</span>
     </button>
-
     <div class="chatbot-popup">
         <div class="chat-header">
             <div class="header-info">
@@ -130,18 +178,7 @@
             </div>
             <button id="close-chatbot" class="material-symbols-rounded">keyboard_arrow_down</button>
         </div>
-
-        <!-- Chatbot Body -->
-        <div class="chat-body">
-            <div class="message bot-message">
-                <svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
-                    <path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"></path>
-                </svg>
-                <div class="message-text">Hai, User 👋 <br>Ada yang bisa saya bantu?</div>
-            </div>
-        </div>
-
-        <!-- Chatbot Footer -->
+        <div class="chat-body"></div>
         <div class="chat-footer">
             <form action="#" class="chat-form">
                 <textarea placeholder="Ask anything . . ." class="message-input" required></textarea>
@@ -152,12 +189,29 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="../main.js"></script>
     <script src="js/script1.js"></script>
-    <script src="/_Chatbot/chatbot.js"></script>
-    <script src="/_Template/template.js"></script>
+    <script src="../_Chatbot/chatbot.js"></script>
+    <script src="../_Template/profile.js"></script>
+    <script>
+    // Sinkronisasi session login PHP ke sessionStorage
+    fetch('../get_user.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.loggedIn) {
+          sessionStorage.setItem('loggedInUser', data.username);
+          sessionStorage.setItem('userRole', data.role);
+        } else {
+          sessionStorage.removeItem('loggedInUser');
+          sessionStorage.removeItem('userRole');
+        }
+        if (typeof updateProfile === 'function') updateProfile();
+      });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            updateProgressBar(5);
+            updateProgressBar(1);
             loadFormData();
         });
     </script>

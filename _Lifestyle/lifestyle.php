@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../_Login/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,8 +12,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>GastroCare - Pola Hidup & Nutrisi</title>
         <link rel="stylesheet" href="lifestyle.css">
-        <link rel="stylesheet" href="/_Chatbot/chatbot.css" />
-        <link rel="stylesheet" href="/_Template/template.css">
+        <link rel="stylesheet" href="../_Chatbot/chatbot.css" />
+        <link rel="stylesheet" href="../_Template/template.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -15,7 +22,7 @@
         <!-- Navigasi -->
         <nav>
             <div class="nav-header">
-                <a href="/main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
+                <a href="../main.php" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
                 <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Logo"></a>
                 
                 <div class="nav-profile">
@@ -199,7 +206,7 @@
     
         <!-- Popup dan Overlay -->
         <div class="popup">
-            <button class="close-popup">×</button>
+            <button class="close-popup">x</button>
             <div class="popup-content"></div>
         </div>
         <div class="overlay"></div>
@@ -263,8 +270,24 @@
             </div>
         </div>
 
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script src="../main.js"></script>
+        <script src="../_Chatbot/chatbot.js"></script>
+        <script src="../_Template/profile.js"></script>
         <script src="lifestyle.js"></script>
-        <script src="/_Chatbot/chatbot.js"></script>
-        <script src="/_Template/template.js"></script>
+        <script>
+        fetch('../get_user.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.loggedIn) {
+              sessionStorage.setItem('loggedInUser', data.username);
+              sessionStorage.setItem('userRole', data.role);
+            } else {
+              sessionStorage.removeItem('loggedInUser');
+              sessionStorage.removeItem('userRole');
+            }
+            if (typeof updateProfile === 'function') updateProfile();
+          });
+        </script>
     </body>
 </html>

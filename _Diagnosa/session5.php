@@ -1,12 +1,19 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../_Login/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sesi 2: Kebiasaan Makan & Gaya Hidup</title>
+    <title>Sesi 5: Riwayat Kesehatan</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="/_Chatbot/chatbot.css">
-    <link rel="stylesheet" href="/_Template/template.css">
+    <link rel="stylesheet" href="../_Chatbot/chatbot.css">
+    <link rel="stylesheet" href="../_Template/template.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
@@ -14,7 +21,7 @@
     <!-- Navigasi -->
     <nav>
         <div class="nav-header">
-            <a href="/main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
+            <a href="../main.html" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
             <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Logo"></a>
             
             <div class="nav-profile">
@@ -65,27 +72,29 @@
     </div>
 
     <div class="container1">
-        <form id="diagnosis-form" onsubmit="saveFormData(event, 'session3.html')">
+        <form id="diagnosis-form" onsubmit="saveFormData(event, 'session6.php')">
             <div class="question-session active">
-                <h2>Seberapa sering Anda makan dalam sehari?</h2>
+                <h2>Apakah Anda pernah didiagnosis dengan penyakit lambung sebelumnya (seperti maag, GERD, dll)?</h2>
                 <div class="form-group">
-                    <button type="button" class="option-btn" data-field="meal_frequency" data-value="1" onclick="selectOption(this, 'meal_frequency', '1')">1 kali</button>
-                    <button type="button" class="option-btn" data-field="meal_frequency" data-value="2" onclick="selectOption(this, 'meal_frequency', '2')">2 kali</button>
-                    <button type="button" class="option-btn" data-field="meal_frequency" data-value="3" onclick="selectOption(this, 'meal_frequency', '3')">3 kali</button>
-                    <button type="button" class="option-btn" data-field="meal_frequency" data-value="more" onclick="selectOption(this, 'meal_frequency', 'more')">Lebih dari 3 kali</button>
-                    <input type="hidden" id="meal_frequency" name="meal_frequency" required>
+                    <button type="button" class="option-btn" data-field="history" data-value="yes" onclick="selectOption(this, 'history', 'yes')">Ya</button>
+                    <button type="button" class="option-btn" data-field="history" data-value="no" onclick="selectOption(this, 'history', 'no')">Tidak</button>
+                    <input type="hidden" id="history" name="history" required>
                 </div>
-                <h2>Apakah Anda sering melewatkan waktu makan?</h2>
+                <h2>Apakah Anda sedang mengonsumsi obat-obatan tertentu secara rutin?</h2>
                 <div class="form-group">
-                    <button type="button" class="option-btn" data-field="skip_meals" data-value="often" onclick="selectOption(this, 'skip_meals', 'often')">Sering</button>
-                    <button type="button" class="option-btn" data-field="skip_meals" data-value="sometimes" onclick="selectOption(this, 'skip_meals', 'sometimes')">Kadang-kadang</button>
-                    <button type="button" class="option-btn" data-field="skip_meals" data-value="rarely" onclick="selectOption(this, 'skip_meals', 'rarely')">Jarang</button>
-                    <button type="button" class="option-btn" data-field="skip_meals" data-value="never" onclick="selectOption(this, 'skip_meals', 'never')">Tidak pernah</button>
-                    <input type="hidden" id="skip_meals" name="skip_meals" required>
+                    <button type="button" class="option-btn" data-field="medication" data-value="yes" onclick="selectOption(this, 'medication', 'yes')">Ya</button>
+                    <button type="button" class="option-btn" data-field="medication" data-value="no" onclick="selectOption(this, 'medication', 'no')">Tidak</button>
+                    <input type="hidden" id="medication" name="medication" required>
+                </div>
+                <h2>Apakah ada anggota keluarga Anda yang memiliki riwayat penyakit lambung?</h2>
+                <div class="form-group">
+                    <button type="button" class="option-btn" data-field="family_history" data-value="yes" onclick="selectOption(this, 'family_history', 'yes')">Ya</button>
+                    <button type="button" class="option-btn" data-field="family_history" data-value="no" onclick="selectOption(this, 'family_history', 'no')">Tidak</button>
+                    <input type="hidden" id="family_history" name="family_history" required>
                 </div>
             </div>
             <div class="navigation-buttons">
-                <button type="button" class="btn secondary" onclick="window.location.href='session1.html'">Kembali</button>
+                <button type="button" class="btn secondary" onclick="window.location.href='session4.php'">Kembali</button>
                 <button type="submit" class="btn primary">Lanjut</button>
             </div>
         </form>
@@ -150,12 +159,29 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="../main.js"></script>
     <script src="js/script1.js"></script>
-    <script src="/_Chatbot/chatbot.js"></script>
-    <script src="/_Template/template.js"></script>
+    <script src="../_Chatbot/chatbot.js"></script>
+    <script src="../_Template/profile.js"></script>
+    <script>
+    // Sinkronisasi session login PHP ke sessionStorage
+    fetch('../get_user.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.loggedIn) {
+          sessionStorage.setItem('loggedInUser', data.username);
+          sessionStorage.setItem('userRole', data.role);
+        } else {
+          sessionStorage.removeItem('loggedInUser');
+          sessionStorage.removeItem('userRole');
+        }
+        if (typeof updateProfile === 'function') updateProfile();
+      });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            updateProgressBar(2);
+            updateProgressBar(5);
             loadFormData();
         });
     </script>

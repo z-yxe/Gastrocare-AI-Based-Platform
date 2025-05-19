@@ -1,8 +1,7 @@
 // Seleksi elemen nav-profile, tombol Login, ikon dropdown, dan dropdown
 const navProfile = document.querySelector('.nav-profile');
+const profileIcon = navProfile ? navProfile.querySelector('i') : null;
 const loginBtn = document.getElementById('login-btn');
-const profileName = navProfile.querySelector('span');
-const profileIcon = navProfile.querySelector('i');
 const profileDropdown = document.getElementById('profile-dropdown');
 const logoutBtn = document.getElementById('logout-btn');
 const chatbotToggler = document.querySelector("#chatbot-toggler");
@@ -95,8 +94,8 @@ document.addEventListener('click', (e) => {
 if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
         sessionStorage.removeItem('loggedInUser');
-        updateProfile();
-        window.location.href = '/main.html';
+        sessionStorage.removeItem('userRole');
+        window.location.href = 'logout.php';
     });
 }
 
@@ -104,16 +103,8 @@ if (logoutBtn) {
 if (logoutBtnMobile) {
     logoutBtnMobile.addEventListener('click', () => {
         sessionStorage.removeItem('loggedInUser');
-        updateProfile();
-        mobileMenu.classList.remove('active');
-        
-        // Reset hamburger icon
-        const hamburgerLines = document.querySelectorAll('.hamburger span');
-        hamburgerLines[0].style.transform = 'none';
-        hamburgerLines[1].style.opacity = '1';
-        hamburgerLines[2].style.transform = 'none';
-
-        window.location.href = '/main.html';
+        sessionStorage.removeItem('userRole');
+        window.location.href = 'logout.php';
     });
 }
 

@@ -1,3 +1,4 @@
+(function() {
 const makananData = {
     sayur: [
         { nama: "Sop Ayam + Nasi Putih + Air Hangat", khasiat: "Mengandung protein yang mudah dicerna dan membantu pemulihan lambung.", img: "assets/sayur1.png" },
@@ -78,6 +79,7 @@ function filterMakanan(kategori) {
     const activeButton = document.querySelector(`.kategori span[onclick="filterMakanan('${kategori}')"]`);
     activeButton.classList.add('active');
 }
+window.filterMakanan = filterMakanan;
 
 function toggleMakanan() {
     tampilSemua = !tampilSemua;
@@ -87,6 +89,7 @@ function toggleMakanan() {
         makananSehatSection.scrollIntoView({ behavior: "smooth" });
     }
 }
+window.toggleMakanan = toggleMakanan;
 
 renderMakanan();
 
@@ -515,3 +518,4 @@ function handleScroll() {
 
 window.addEventListener('scroll', handleScroll);
 window.addEventListener('DOMContentLoaded', handleScroll);
+})();

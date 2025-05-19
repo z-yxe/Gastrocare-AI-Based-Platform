@@ -44,8 +44,7 @@ body.show-chatbot #chatbot-toggler {
     position: absolute;
 }
 
-body.show-chatbot #chatbot-toggler span:first-child,
-#chatbot-toggler span:last-child {
+body.show-chatbot #chatbot-toggler span:first-child {
     opacity: 0;
 }
 
