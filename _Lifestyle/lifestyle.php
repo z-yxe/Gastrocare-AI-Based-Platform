@@ -277,8 +277,8 @@ if (!isset($_SESSION['user_id'])) {
         <script src="lifestyle.js"></script>
         <script>
         fetch('../get_user.php')
-          .then(res => res.json())
-          .then(data => {
+        .then(res => res.json())
+        .then(data => {
             if (data.loggedIn) {
               sessionStorage.setItem('loggedInUser', data.username);
               sessionStorage.setItem('userRole', data.role);
@@ -287,7 +287,21 @@ if (!isset($_SESSION['user_id'])) {
               sessionStorage.removeItem('userRole');
             }
             if (typeof updateProfile === 'function') updateProfile();
-          });
+        });
+        </script>
+        <script>
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            window.location.href = '../logout.php';
+        });
+
+        // Mobile logout button
+        const mobileLogoutBtn = document.getElementById('logout-btn-mobile');
+        if (mobileLogoutBtn) {
+            mobileLogoutBtn.addEventListener('click', function() {
+                window.location.href = '../logout.php';
+            });
+        }
         </script>
     </body>
 </html>

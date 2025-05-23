@@ -358,6 +358,19 @@ if (!isset($_SESSION['user_id'])) {
         }
         if (typeof updateProfile === 'function') updateProfile();
       });
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        window.location.href = '../logout.php';
+    });
+
+    // Mobile logout button
+    const mobileLogoutBtn = document.getElementById('logout-btn-mobile');
+    if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener('click', function() {
+            window.location.href = '../logout.php';
+        });
+    }
     </script>
   </body>
 </html>
