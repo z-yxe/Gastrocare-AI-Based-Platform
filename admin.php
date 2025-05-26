@@ -377,7 +377,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                     <h4>Kelola Edukasi</h4>
                     <p>Tambah, edit, atau hapus artikel edukasi kesehatan. Pastikan informasi yang diberikan selalu akurat dan terbaru untuk pengguna GastroCare.</p>
-                    <a href="_Education/education.php" class="btn">Kelola Edukasi</a>
+                    <a href="_Education/admin_education.php" class="btn">Kelola Edukasi</a>
                 </div>
                 <div class="admin-card" onclick="goToDiagnosisManagement()">
                     <div class="icon">
@@ -385,7 +385,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                     <h4>Kelola Diagnosa</h4>
                     <p>Kelola data diagnosa, pertanyaan, dan hasil analisis. Atur alur diagnosa agar pengguna mendapatkan hasil yang tepat dan informatif.</p>
-                    <a href="_Diagnosa/diagnosa.php" class="btn">Kelola Diagnosa</a>
+                    <a href="_Diagnosa/admin_diagnosa.php" class="btn">Kelola Diagnosa</a>
                 </div>
                 <div class="admin-card" onclick="goToLifestyleManagement()">
                     <div class="icon">
@@ -393,7 +393,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                     <h4>Kelola Lifestyle</h4>
                     <p>Atur konten gaya hidup sehat, rekomendasi makanan, dan tips kesehatan. Bantu pengguna menerapkan pola hidup sehat melalui fitur ini.</p>
-                    <a href="_Lifestyle/lifestyle.php" class="btn">Kelola Lifestyle</a>
+                    <a href="_Lifestyle/admin_lifestyle.php" class="btn">Kelola Lifestyle</a>
                 </div>
             </div>
         </section>
@@ -502,15 +502,15 @@ if (!isset($_SESSION['user_id'])) {
         <script src="_Template/profile.js"></script>
         <script>        // Admin functions
         function goToEducationManagement() {
-            window.location.href = '_Education/education.php';
+            window.location.href = '_Education/admin_education.php';
         }
 
         function goToDiagnosisManagement() {
-            window.location.href = '_Diagnosa/diagnosa.php';
+            window.location.href = '_Diagnosa/admin_diagnosa.php';
         }
 
         function goToLifestyleManagement() {
-            window.location.href = '_Lifestyle/lifestyle.php';
+            window.location.href = '_Lifestyle/admin_lifestyle.php';
         }
 
         // Logout function
