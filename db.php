@@ -1,14 +1,17 @@
 <?php
 $host = 'localhost';
 $user = 'root';
-$password = ''; // Sesuaikan dengan password MySQL Anda
+$password = ''; // Adjust with your MySQL password
 $dbname = 'gastrocare_db';
 
-// Membuat koneksi
+// Create connection
 $conn = new mysqli($host, $user, $password, $dbname);
 
-// Cek koneksi
+// Check connection
 if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
+
+// Set charset to UTF-8
+$conn->set_charset("utf8mb4");
 ?>

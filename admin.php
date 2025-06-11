@@ -385,7 +385,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                     <h4>Kelola Diagnosa</h4>
                     <p>Kelola data diagnosa, pertanyaan, dan hasil analisis. Atur alur diagnosa agar pengguna mendapatkan hasil yang tepat dan informatif.</p>
-                    <a href="_Diagnosa/admin_diagnosa.php" class="btn">Kelola Diagnosa</a>
+                    <a href="_Diagnosa/admin_diagnosa_3.php" class="btn">Kelola Diagnosa</a>
                 </div>
                 <div class="admin-card" onclick="goToLifestyleManagement()">
                     <div class="icon">
@@ -506,7 +506,7 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         function goToDiagnosisManagement() {
-            window.location.href = '_Diagnosa/admin_diagnosa.php';
+            window.location.href = '_Diagnosa/admin_diagnosa_3.php';
         }
 
         function goToLifestyleManagement() {

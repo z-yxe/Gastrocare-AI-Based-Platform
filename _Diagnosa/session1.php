@@ -1,10 +1,16 @@
 <?php
 session_start();
+require_once 'C:\xampp\htdocs\gastrocare\db.php';
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../_Login/login.php');
     exit;
 }
+
+// Fetch questions for session 1
+$questions = $conn->query("SELECT * FROM questions WHERE session = 1 ORDER BY id");
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -17,49 +23,49 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <style>
+        .checkbox-label {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 10px;
+        }
+        .form-group.checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigasi -->
     <nav>
         <div class="nav-header">
-            <a href="../main.php" class="nav-close"><img src="assets/close.png" id="close-btn" alt="Tutup" /></a>
+            <a href="../main.php" class="nav-close"><img src="assets/close.png" alt="Tutup" /></a>
             <a href="#" class="nav-logo"><img src="assets/logo.png" alt="Logo"></a>
-            
             <div class="nav-profile">
                 <img src="assets/user.png" alt="profile">
-                <span>Nama User</span>
+                <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                 <i class='bx bx-caret-down'></i>
                 <button class="login-button" id="login-btn">Login</button>
                 <div class="profile-dropdown" id="profile-dropdown">
                     <button id="logout-btn" class="logout-button">Logout</button>
                 </div>
             </div>
-            
-            <!-- Hamburger Menu untuk Mobile -->
             <div class="hamburger">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
         </div>
-        
-        <!-- Mobile Menu -->
         <ul class="mobile-menu">
-            <!-- Mobile Profile Info -->
             <div class="profile-info" id="mobile-profile-info">
                 <img src="assets/user.png" alt="profile">
-                <span>Nama User</span>
+                <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
             </div>
-            
-            <!-- Mobile Login Button -->
             <button class="login-button-mobile" id="login-btn-mobile">Login</button>
-            
-            <!-- Mobile Logout Button -->
             <button id="logout-btn-mobile" class="logout-button-mobile">Logout</button>
         </ul>
     </nav>
 
-    <!-- Progress Bar -->
     <div class="progress-container">
         <h2>Lengkapi Pertanyaan Dengan Data Yang Sesuai!</h2>
         <div class="steps">
@@ -72,98 +78,60 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
-    <!-- Form Section -->
     <div class="container1">
         <form id="diagnosis-form" onsubmit="saveFormData(event, 'session2.php')">
             <div class="question-session active">
-                <h2>Apa jenis kelamin anda?</h2>
-                <div class="form-group">
-                    <button type="button" class="option-btn" data-field="gender" data-value="male" onclick="selectOption(this, 'gender', 'male')">Laki - Laki</button>
-                    <button type="button" class="option-btn" data-field="gender" data-value="female" onclick="selectOption(this, 'gender', 'female')">Perempuan</button>
-                    <input type="hidden" id="gender" name="gender" required>
-                </div>
-
-                <h2>Berapa usia anda saat ini?</h2>
-                <div class="form-group">
-                    <select name="age" id="age" required >
-                        <option value="">Pilih usia anda</option>
-                        <option value="0-20">0-20</option>
-                        <option value="21-40">21-40</option>
-                        <option value="41-60">41-60</option>
-                        <option value="61+">61+</option>
-                    </select>
-                </div>
-
-                <h2>Berapa berat badan anda? (kg)</h2>
-                <div class="form-group">
-                    <input type="number" name="weight" id="weight" placeholder="Isi dengan angka (kg)" required min="1">
-                </div>
-
-                <h2>Berapa tinggi badan anda? (cm)</h2>
-                <div class="form-group">
-                    <input type="number" name="height" id="height" placeholder="Isi dengan angka (cm)" required min="1">
-                </div>
-
-                <h2>Apakah Anda memiliki riwayat penyakit kronis?</h2>
-                <div class="form-group checkbox-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="diabetes">
-                        <span>Diabetes</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="hypertension">
-                        <span>Hipertensi</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="asthma">
-                        <span>Asma</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="heart_disease">
-                        <span>Jantung</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="chronic_disease" value="other">
-                        <span>Lainnya</span>
-                    </label>
-                </div>
-
-                <h2>Apakah Anda mengonsumsi rokok atau alkohol?</h2>
-                <div class="form-group">
-                    <button type="button" class="option-btn" data-field="smoking_alcohol" data-value="yes" onclick="selectOption(this, 'smoking_alcohol', 'yes')">YA</button>
-                    <button type="button" class="option-btn" data-field="smoking_alcohol" data-value="no" onclick="selectOption(this, 'smoking_alcohol', 'no')">NO</button>
-                    <input type="hidden" id="smoking_alcohol" name="smoking_alcohol" required>
-                </div>
+                <?php while ($question = $questions->fetch_assoc()): ?>
+                    <h2><?php echo htmlspecialchars($question['question_text']); ?></h2>
+                    <div class="form-group">
+                        <?php
+                        $options = json_decode($question['options'], true);
+                        if ($question['input_type'] === 'button') {
+                            foreach ($options as $option) {
+                                echo "<button type='button' class='option-btn' data-field='{$question['field_name']}' data-value='$option' onclick=\"selectOption(this, '{$question['field_name']}', '$option')\">" . htmlspecialchars($option) . "</button>";
+                            }
+                            echo "<input type='hidden' id='{$question['field_name']}' name='{$question['field_name']}' required>";
+                        } elseif ($question['input_type'] === 'select') {
+                            echo "<select name='{$question['field_name']}' id='{$question['field_name']}' required>";
+                            echo "<option value=''>Pilih opsi</option>";
+                            foreach ($options as $option) {
+                                echo "<option value='$option'>" . htmlspecialchars($option) . "</option>";
+                            }
+                            echo "</select>";
+                        } elseif ($question['input_type'] === 'number') {
+                            echo "<input type='number' name='{$question['field_name']}' id='{$question['field_name']}' placeholder='Isi dengan angka' required min='1'>";
+                        } elseif ($question['input_type'] === 'checkbox') {
+                            foreach ($options as $option) {
+                                echo "<label class='checkbox-label'><input type='checkbox' name='{$question['field_name']}' value='$option'><span>" . htmlspecialchars($option) . "</span></label>";
+                            }
+                        }
+                        ?>
+                    </div>
+                <?php endwhile; ?>
             </div>
-
             <div class="navigation-buttons">
                 <button type="submit" class="btn primary">Lanjut</button>
             </div>
         </form>
     </div>
 
-    <!-- FOOTER -->
     <footer class="footer-content">
         <div class="container">
             <div class="footer-content-content">
                 <h2 class="footer-content-logo">GASTROCARE</h2>
-    
                 <div class="footer-content-main">
-                <h3 class="footer-content-title">Butuh Bantuan untuk Kesehatan Lambung Anda?</h3>
-                <p class="footer-content-desc">
-                    Dapatkan wawasan akurat, analisis bertenaga AI, dan panduan yang didukung pakar tentang semua kondisi terkait lambung. Sistem cerdas kami membantu Anda memahami gejala, pencegahan, dan pilihan pengobatan hanya dalam beberapa
-                    klik.
-                </p>
+                    <h3 class="footer-content-title">Butuh Bantuan untuk Kesehatan Lambung Anda?</h3>
+                    <p class="footer-content-desc">
+                        Dapatkan wawasan akurat, analisis bertenaga AI, dan panduan yang didukung pakar tentang semua kondisi terkait lambung.
+                    </p>
                 </div>
-    
                 <div class="footer-content-bottom">
-                <p class="copyright">© 2025 GASTROCARE</p>
+                    <p class="copyright">© 2025 GASTROCARE</p>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Chatbot -->
     <button id="chatbot-toggler">
         <span class="material-symbols-rounded">mode_comment</span>
         <span class="material-symbols-rounded">close</span>
@@ -195,39 +163,22 @@ if (!isset($_SESSION['user_id'])) {
     <script src="../_Chatbot/chatbot.js"></script>
     <script src="../_Template/profile.js"></script>
     <script>
-    // Sinkronisasi session login PHP ke sessionStorage
-    fetch('../get_user.php')
-      .then(res => res.json())
-      .then(data => {
-        if (data.loggedIn) {
-          sessionStorage.setItem('loggedInUser', data.username);
-          sessionStorage.setItem('userRole', data.role);
-        } else {
-          sessionStorage.removeItem('loggedInUser');
-          sessionStorage.removeItem('userRole');
-        }
-        if (typeof updateProfile === 'function') updateProfile();
-      });
-    </script>
-    <script>
+        fetch('../get_user.php')
+            .then(res => res.json())
+            .then(data => {
+                if (data.loggedIn) {
+                    sessionStorage.setItem('loggedInUser', data.username);
+                    sessionStorage.setItem('userRole', data.role);
+                } else {
+                    sessionStorage.removeItem('loggedInUser');
+                    sessionStorage.removeItem('userRole');
+                }
+                if (typeof updateProfile === 'function') updateProfile();
+            });
         document.addEventListener('DOMContentLoaded', () => {
             updateProgressBar(1);
             loadFormData();
         });
-    </script>
-    <script>
-    // Logout functionality
-    document.getElementById('logout-btn').addEventListener('click', function() {
-        window.location.href = '../logout.php';
-    });
-
-    // Mobile logout button
-    const mobileLogoutBtn = document.getElementById('logout-btn-mobile');
-    if (mobileLogoutBtn) {
-        mobileLogoutBtn.addEventListener('click', function() {
-            window.location.href = '../logout.php';
-        });
-    }
     </script>
 </body>
 </html>

@@ -38,6 +38,16 @@ body {
     margin: 0 auto ;
 }
 
+.progress-container-details {
+    background-color: var(--primary-color);
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+    color: #fff;
+    margin: 0 auto ;
+    border-radius: 20px;
+}
+
 .progress-container h2 {
     font-size: 24px;
     font-weight: 600;
@@ -124,18 +134,15 @@ body {
     color: #999;
 }
 
-/* Checkbox Styling */
-.checkbox-group {
+.checkbox-label {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+.form-group.checkbox-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    cursor: pointer;
+    gap: 10px;
 }
 
 .checkbox-label input[type="checkbox"] {

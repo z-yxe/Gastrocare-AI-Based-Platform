@@ -16,6 +16,29 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="../_Template/template.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <style>
+        .progress-container .bar {
+            display: flex;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-container .bar .section {
+            flex: 1;
+        }
+        .progress-container .bar .green { background: #28a745; } /* Aman */
+        .progress-container .bar .light-green { background: #90ee90; } /* Aman Menengah */
+        .progress-container .bar .yellow { background: #ffc107; } /* Menengah */
+        .progress-container .bar .orange { background: #ff8c00; } /* Waspada */
+        .progress-container .bar .red { background: #dc3545; } /* Kritis */
+        .progress-container .labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigasi -->
@@ -67,27 +90,31 @@ if (!isset($_SESSION['user_id'])) {
                     <h2>Skala Kondisi Lambung</h2>
                     <div class="bar">
                         <div class="section green"></div>
+                        <div class="section light-green"></div>
                         <div class="section yellow"></div>
+                        <div class="section orange"></div>
                         <div class="section red"></div>
                     </div>
                     <div class="marker-container">
                         <div class="marker" id="marker">0</div>
                     </div>
                     <div class="labels">
-                        <span>0-13 (Rendah)</span>
-                        <span>14-26 (Sedang)</span>
-                        <span>27-40 (Tinggi)</span>
+                        <span>0-8 (Aman)</span>
+                        <span>9-16 (Aman Menengah)</span>
+                        <span>17-24 (Menengah)</span>
+                        <span>25-32 (Waspada)</span>
+                        <span>33-40 (Kritis)</span>
                     </div>
                 </div>
 
-                <!-- Diagnosis Conclusion (unchanged) -->
+                <!-- Diagnosis Conclusion -->
                 <div class="diagnosis-conclusion">
                     <br>
                     <h2 id="diagnosis-title">Kesimpulan</h2>
-                    <p id="conclusion-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis malesuada vulputate tempor. Aliquam quam turpis, pharetra quis ante in, ornare luctus felis. Aliquam non magna vitae odio eleifend sodales. Aliquam non facilisis dui. Nam porttitor augue sed augue scelerisque, bibendum rhoncus sem egestas. Proin non diam eu est semper pulvinar sed vel metus. Nam venenatis purus dolor, in feugiat massa feugiat vitae.</p>
+                    <p id="conclusion-text"></p>
                 </div>
 
-                <!-- Ringkasan Tentang Kesehatan Lambung (unchanged) -->
+                <!-- Ringkasan Tentang Kesehatan Lambung -->
                 <div class="health-details">
                     <br><br>
                     <h2>Ringkasan Tentang Kesehatan Lambung</h2>
@@ -97,7 +124,7 @@ if (!isset($_SESSION['user_id'])) {
                     </ul>
                 </div>
 
-                <!-- Mulai Diagnosa Baru Button (unchanged) -->
+                <!-- Mulai Diagnosa Baru Button -->
                 <div class="button-container">
                     <button class="btn primary" onclick="window.location.href='diagnosa.php'">Mulai Diagnosa Baru</button>
                 </div>
@@ -114,8 +141,7 @@ if (!isset($_SESSION['user_id'])) {
                 <div class="footer-content-main">
                 <h3 class="footer-content-title">Butuh Bantuan untuk Kesehatan Lambung Anda?</h3>
                 <p class="footer-content-desc">
-                    Dapatkan wawasan akurat, analisis bertenaga AI, dan panduan yang didukung pakar tentang semua kondisi terkait lambung. Sistem cerdas kami membantu Anda memahami gejala, pencegahan, dan pilihan pengobatan hanya dalam beberapa
-                    klik.
+                    Dapatkan wawasan akurat, analisis bertenaga AI, dan panduan yang didukung pakar tentang semua kondisi terkait lambung. Sistem cerdas kami membantu Anda memahami gejala, pencegahan, dan pilihan pengobatan hanya dalam beberapa klik.
                 </p>
                 </div>
     
@@ -174,20 +200,6 @@ if (!isset($_SESSION['user_id'])) {
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', displayResult);
-    </script>
-    <script>
-    // Logout functionality
-    document.getElementById('logout-btn').addEventListener('click', function() {
-        window.location.href = '../logout.php';
-    });
-
-    // Mobile logout button
-    const mobileLogoutBtn = document.getElementById('logout-btn-mobile');
-    if (mobileLogoutBtn) {
-        mobileLogoutBtn.addEventListener('click', function() {
-            window.location.href = '../logout.php';
-        });
-    }
     </script>
 </body>
 </html>
