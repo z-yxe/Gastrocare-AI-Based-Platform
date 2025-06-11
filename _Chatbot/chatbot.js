@@ -4,8 +4,8 @@ const sendMessageButton = document.querySelector("#send-message");
 const closeChatbot = document.querySelector("#close-chatbot");
 
 // API Setup
-const API_KEY = "AIzaSyDbowFojuV48wvK3C1Pje_Xp4RYcbyDByw";
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+// const API_KEY = "AIzaSyDbowFojuV48wvK3C1Pje_Xp4RYcbyDByw";
+// const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 // Ambil username dari sessionStorage
 const loggedInUser = sessionStorage.getItem('loggedInUser') || "User"; // Default "User" jika tidak ada
@@ -35,43 +35,35 @@ const createMessageElement = (content, ...classes) => {
     return div;
 };
 
-// Generate bot response using API
+// Generate bot response by calling our new backend handler
 const generateBotResponse = async (incomingMessageDiv) => {
     const messageElement = incomingMessageDiv.querySelector(".message-text");
-    
-    // Add user message to chat history
-    chatHistory.push({
-        role: "user",
-        parts: [{ text: userData.message }]
-    });
+    const userMessage = userData.message; // Ambil pesan asli dari user
 
-    // API request option
+    // Ganti 'gastrocare' dengan nama folder Anda jika berbeda
+    const API_URL = "/gastrocare/_Chatbot/chatbot_handler.php";
+
+    // Opsi request ke backend kita
     const requestOption = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            contents: chatHistory
+            message: userMessage // Kirim hanya pesan user
         })
     };
 
     try {
-        // Fetch bot response from API
+        // Fetch respons dari backend handler (bukan lagi dari Google API)
         const response = await fetch(API_URL, requestOption);
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error.message);
+        
+        // Tampilkan jawaban yang diterima dari backend
+        messageElement.innerText = data.answer.replace(/\*\*(.*?)\*\*/g, "$1").trim();
 
-        // Extract and display bot response text
-        const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
-        messageElement.innerText = apiResponseText;
-
-        // Add bot response to chat history
-        chatHistory.push({
-            role: "model",
-            parts: [{ text: apiResponseText }]
-        });
     } catch (error) {
-        console.log(error);
-        messageElement.innerText = error.message;
+        console.error(error); // Log error untuk debugging
+        // Tampilkan pesan error jika terjadi masalah saat menghubungi backend
+        messageElement.innerText = "Maaf, sepertinya ada masalah koneksi. Silakan coba lagi nanti.";
         messageElement.style.color = "#ff0000";
     } finally {
         incomingMessageDiv.classList.remove("thinking");
@@ -83,8 +75,7 @@ const generateBotResponse = async (incomingMessageDiv) => {
 const handleOutgoingMessage = (e) => {
     e.preventDefault();
     const userOriginalMessage = messageInput.value.trim(); // Simpan pesan asli user
-    userData.message = `Namamu adalah GastroBot, kamu adalah AI yang hanya bisa menjawab topik seputar lambung saja selain itu tidak bisa. Berikut pertanyaan user: ${userOriginalMessage}`;
-    messageInput.value = "";
+    userData.message = userOriginalMessage; // Cukup simpan pesan asli user    messageInput.value = "";
     messageInput.dispatchEvent(new Event("input"));
 
     // Create and display user message

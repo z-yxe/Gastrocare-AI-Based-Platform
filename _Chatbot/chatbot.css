@@ -68,6 +68,8 @@ body.show-chatbot #chatbot-toggler span:last-child {
     box-shadow: 0 1px 15px rgba(0, 0, 0, 0.3);
     transition: all 0.1s ease;
     z-index: 1100;
+    display: flex;
+    flex-direction: column;
 }
 
 body.show-chatbot .chatbot-popup {
@@ -128,8 +130,7 @@ body.show-chatbot .chatbot-popup {
     padding: 25px 22px;
     display: flex;
     gap: 20px;
-    height: 460px;
-    margin-bottom: 82px;
+    flex-grow: 1;
     overflow-y: auto;
     flex-direction: column;
     scrollbar-width: thin;
@@ -225,8 +226,6 @@ body.show-chatbot .chatbot-popup {
 }
 
 .chat-footer {
-    position: absolute;
-    bottom: 0;
     width: 100%;
     background: var(--white);
     padding: 15px 22px 20px;
